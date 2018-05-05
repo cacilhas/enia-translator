@@ -8,7 +8,7 @@ with open('./README.md') as fp:
 
 setup(
     name='enia-translator',
-    version='1.0.0',
+    version='1.1.0',
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
     long_description=long_description,
@@ -29,6 +29,7 @@ setup(
     entry_points={
         'console_scripts': [
             'en-ia = enia_translator._scripts.en_ia:entrypoint',
+            'x-en-ia = enia_translator._scripts.gui:entrypoint',
         ],
     },
     classifiers=[
