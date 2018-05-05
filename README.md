@@ -26,8 +26,12 @@ The source for matches is the
 
 ## TODO
 
-- Support other languages without configfile edition.
+- Support other languages with no config-file editing (using
+  [`argparse`](https://docs.python.org/3/library/argparse.html)).
 - Support inexact search.
+- Search for multiple words.
+- Use [AsyncIO](https://docs.python.org/3/library/asyncio.html) for
+  parallelizing searches and processing.
 
 ## Copyrights
 
