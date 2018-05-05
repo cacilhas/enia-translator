@@ -1,0 +1,14 @@
+*.bak
+*.egg
+*.egg-info
+*.pyc
+*.swo
+*.swp
+*~
+.eggs
+.idea
+.project
+.vscode
+/tmp
+__pycache__
+dist
