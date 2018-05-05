@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='enia-translator',
-    version='0.1',
+    version='1.0',
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
     author='ℜodrigo ℭacilhας',
