@@ -3,7 +3,7 @@ from unittest.mock import call, patch
 import os
 import os.path as path
 from io import StringIO
-from enia_translator.settings import load_settings
+from enia_translator.settings import Settings, load_settings
 
 
 class LoadSettingsTest(TestCase):
@@ -37,18 +37,15 @@ class LoadSettingsTest(TestCase):
             self.assertIn(call(fname), exists.call_args_list)
             exists.assert_called_with(fname)
             open_mock.assert_called_once_with(fname, 'w')
-            self.assertEqual(config, {
-                'enia': {'translate': 'en-ia'},
-                'local': {
-                    'cache': cachedir,
-                    'translate': 'en-ia',
-                },
-                'web': {
-                    'en-ia.url': 'http://www.interlingua.com/an/'
-                                'ceid-english{lower[0]}',
-                    'translate': 'en-ia',
-                },
-            })
+            self.assertEqual(config, Settings(
+                cachedir=cachedir,
+                translate='en-ia',
+                urls=config.urls_class(
+                    en_ia='http://www.interlingua.com/an/'
+                          'ceid-english{lower[0]}',
+                ),
+                urls_class=config.urls_class,
+            ))
             self.assertTrue(buf.closed)
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
@@ -89,19 +86,16 @@ class LoadSettingsTest(TestCase):
                 call(fname),
                 call(fname, 'w'),
             ])
-            self.assertEqual(config, {
-                'enia': {'translate': 'ia-en'},
-                'local': {
-                    'cache': '/tmp',
-                    'translate': 'ia-en',
-                },
-                'web': {
-                    'en-ia.url': 'http://www.interlingua.com/an/'
-                                'ceid-english{lower[0]}',
-                    'ia-en.url': 'http://www.google.com/search?q={word}',
-                    'translate': 'ia-en',
-                },
-            })
+            self.assertEqual(config, Settings(
+                cachedir='/tmp',
+                translate='ia-en',
+                urls=config.urls_class(
+                    en_ia='http://www.interlingua.com/an/'
+                          'ceid-english{lower[0]}',
+                    ia_en='http://www.google.com/search?q={word}',
+                ),
+                urls_class=config.urls_class,
+            ))
             self.assertTrue(buf.closed)
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
@@ -138,18 +132,15 @@ class LoadSettingsTest(TestCase):
                 call(fname),
                 call(fname, 'w'),
             ])
-            self.assertEqual(config, {
-                'enia': {'translate': 'en-ia'},
-                'local': {
-                    'cache': '/tmp',
-                    'translate': 'en-ia',
-                },
-                'web': {
-                    'en-ia.url': 'http://www.interlingua.com/an/'
-                                'ceid-english{lower[0]}',
-                    'translate': 'en-ia',
-                },
-            })
+            self.assertEqual(config, Settings(
+                cachedir='/tmp',
+                translate='en-ia',
+                urls=config.urls_class(
+                    en_ia='http://www.interlingua.com/an/'
+                          'ceid-english{lower[0]}',
+                ),
+                urls_class=config.urls_class,
+            ))
             self.assertTrue(buf.closed)
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
