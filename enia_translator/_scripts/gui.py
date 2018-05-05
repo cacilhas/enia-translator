@@ -10,7 +10,7 @@ def entrypoint() -> None:
     root = tk.Tk()
     root.title('EN-IA Translator')
     app = GUIApplication(root)
-    app.pack()
+    app.pack(fill=tk.BOTH, expand=True)
     root.wm_attributes('-topmost', 1)
     root.focus_force()
     app.mainloop()
@@ -36,7 +36,7 @@ class GUIApplication(ttk.Frame):
         lb_main.pack(anchor=tk.NW, side=tk.LEFT, expand=False)
         tx_entry.pack(anchor=tk.NE, side=tk.RIGHT, fill=tk.X, expand=True)
         fr_search.pack(anchor=tk.N, fill=tk.X, expand=True)
-        bt_go.pack(anchor=tk.S, expand=True)
+        bt_go.pack(anchor=tk.S, expand=False)
         tx_show.pack(anchor=tk.S, fill=tk.BOTH, expand=True)
 
         tx_entry.focus()

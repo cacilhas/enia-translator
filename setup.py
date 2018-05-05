@@ -8,7 +8,7 @@ with open('./README.md') as fp:
 
 setup(
     name='enia-translator',
-    version='1.1.0',
+    version='1.1.1',
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
     long_description=long_description,
