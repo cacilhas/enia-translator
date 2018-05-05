@@ -22,6 +22,11 @@ setup(
     tests_require=[
         'vcrpy==1.11.1',
     ],
+    entry_points={
+        'console_scripts': [
+            'en-ia = enia_translator._scripts.en_ia:entrypoint',
+        ],
+    },
     classifiers=[
         'Environment :: Console',
         'License :: OSI Approved :: BSD License',
