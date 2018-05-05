@@ -3,11 +3,15 @@
 import os.path as path
 from setuptools import find_packages, setup
 
+with open('./README.md') as fp:
+    long_description = fp.read()
+
 setup(
     name='enia-translator',
-    version='1.0',
+    version='1.0.0',
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
+    long_description=long_description,
     author='ℜodrigo ℭacilhας',
     author_email='batalema@cacilhas.info',
     url='https://bitbucket.org/cacilhas/enia-translator/src',
