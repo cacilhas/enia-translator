@@ -1,5 +1,4 @@
-__AUTHOR__ = 'ℜodrigo Arĥimedeς ℳontegasppα ℭacilhας' \
-             ' <batalema@cacilhas.info>'
+__AUTHOR__ = 'ℜodrigo ℭacilhας <batalema@cacilhas.info>'
 __VERSION__ = '0.1'
 
 from .main import EniaWordSearcher

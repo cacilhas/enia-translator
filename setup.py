@@ -8,7 +8,7 @@ setup(
     version='0.1',
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
-    author='ℜodrigo Arĥimedeς ℳontegasppα ℭacilhας',
+    author='ℜodrigo ℭacilhας',
     author_email='batalema@cacilhas.info',
     url='https://bitbucket.org/cacilhas/enia-translator/src',
     packages=find_packages(exclude=('tests', 'tests.*')),
