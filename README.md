@@ -24,6 +24,11 @@ ALL adj omne, tote; adv completemente; (everybody) omnes, totes; (everything)
 The source for matches is the
 [Union Mundial pro Interlingua](http://www.interlingua.com/an/ceid).
 
+## TODO
+
+- Support other languages without configfile edition.
+- Support inexact search.
+
 ## Copyrights
 
 It’s under the [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).
