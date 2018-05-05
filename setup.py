@@ -14,7 +14,7 @@ setup(
     long_description=long_description,
     author='ℜodrigo ℭacilhας',
     author_email='batalema@cacilhas.info',
-    url='https://bitbucket.org/cacilhas/enia-translator/src',
+    url='https://bitbucket.org/cacilhas/enia-translator/',
     packages=find_packages(exclude=('tests', 'tests.*')),
     install_requires=[
         'appdirs==1.4.3',
