@@ -34,4 +34,4 @@ The source for matches is the
 It’s under the [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).
 
 You can read the copying text
-[here](https://bitbucket.org/cacilhas/enia-translator/src/master/COPYING).
+[here](https://bitbucket.org/cacilhas/enia-translator/src/master/LICENSE.txt).
