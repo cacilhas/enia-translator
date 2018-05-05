@@ -60,6 +60,17 @@ class LoadSettingsTest(TestCase):
 
     @patch('enia_translator.settings.open')
     @patch('enia_translator.settings.path.exists')
+    def test_reuse_config(self, exists, open_mock):
+        def side_effect(filename, mode='r') -> StringIO:
+            return StringIO()
+
+        exists.return_value = False
+        open_mock.side_effect = side_effect
+        config = load_settings()
+        self.assertIs(config, load_settings())
+
+    @patch('enia_translator.settings.open')
+    @patch('enia_translator.settings.path.exists')
     def test_use_existent_config_file(self, exists, open_mock):
         with StringIO() as iop:
             buf = IOWrapper(wrapped=iop)
