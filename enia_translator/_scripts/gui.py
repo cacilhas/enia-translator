@@ -1,8 +1,10 @@
+import asyncio
+from threading import Thread
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.scrolledtext import ScrolledText
 
-from enia_translator import EniaWordSearcher
+from enia_translator.multisearch import search as enia_search
 from enia_translator.settings import load_settings
 
 
@@ -21,13 +23,13 @@ class GUIApplication(ttk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         master.bind('<Return>', lambda evt: self.search())
-        self.word = tk.StringVar()
+        self.words = tk.StringVar()
         self.create_widgets()
 
     def create_widgets(self) -> None:
         fr_search = ttk.Frame(self)
         lb_main = ttk.Label(fr_search, text='Word to search:')
-        tx_entry = ttk.Entry(fr_search, textvariable=self.word)
+        tx_entry = ttk.Entry(fr_search, textvariable=self.words)
         bt_go = ttk.Button(self, text='Search', command=self.search)
         tx_show = self.result = ScrolledText(self, wrap=tk.WORD)
 
@@ -42,8 +44,18 @@ class GUIApplication(ttk.Frame):
         tx_entry.focus()
 
     def search(self) -> None:
-        value = self.word.get()
-        searcher = EniaWordSearcher(value, load_settings())
-        result = '\n'.join(searcher.search(value))
+        value = self.words.get()
         self.result.delete('1.0', tk.END)
-        self.result.insert(tk.INSERT, result)
+        def callback(result: str) -> None:
+            self.result.insert(tk.INSERT, result + '\n')
+
+        def target() -> None:
+            loop = asyncio.new_event_loop()
+            try:
+                enia_search(value, callback, loop=loop)
+            finally:
+                loop.close()
+
+        thr = Thread(target=target)
+        thr.deamon = True
+        thr.start()
