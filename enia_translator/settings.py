@@ -53,7 +53,7 @@ def load_settings() -> Settings:
 
 def get_config(fname: str, cachedir: str) -> ConfigParser:
     config = ConfigParser(
-        {'translate': 'en-ia', 'min-score': '0.95'},
+        {'translate': 'en-ia', 'min-score': '0.75'},
         default_section='enia',
     )
     config.add_section('local')

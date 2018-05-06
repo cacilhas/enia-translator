@@ -40,7 +40,7 @@ class LoadSettingsTest(TestCase):
             self.assertEqual(config, Settings(
                 cachedir=cachedir,
                 translate='en-ia',
-                min_score=.95,
+                min_score=.75,
                 urls=config.urls_class(
                     en_ia='http://www.interlingua.com/an/'
                           'ceid-english{lower[0]}',
@@ -51,7 +51,7 @@ class LoadSettingsTest(TestCase):
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
                 'translate = en-ia\n'
-                'min-score = 0.95\n\n'
+                'min-score = 0.75\n\n'
                 '[local]\n'
                 'cache = {cachedir}\n\n'
                 '[web]\n'
