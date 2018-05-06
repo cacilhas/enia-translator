@@ -1,10 +1,9 @@
 import os.path as path
 from typing import Generator
-from leven import levenshtein as leven
 from lxml import html
 import requests
+from . import stringdiff
 from .settings import Settings, load_settings
-
 
 class EniaWordSearcher:
     __slots__ = ('__tree', 'cachedir', 'min_score', 'url')
@@ -43,20 +42,13 @@ class EniaWordSearcher:
         return self.__tree
 
     def search(self, word: str) -> Generator[str, None, None]:
-        word = word.upper()
         elements = self.tree.xpath(r'//*/text()')
         for element in (elements or ()):
             value = str(element).strip()
             if not value:
                 continue
 
-            # TODO: function to calculate it
-            ref = value.split()[0].upper()
-            diff = leven(word, ref)
-            if diff == 0:
+            score = stringdiff.score(word, value.split()[0],
+                                     case_sensitive=False)
+            if score >= self.min_score:
                 yield value
-            else:
-                length = max(len(word), len(ref))
-                score = (length - diff) / length
-                if score >= self.min_score:
-                    yield value
