@@ -28,7 +28,6 @@ The source for matches is the
 
 - Support other languages with no config-file editing (using
   [`argparse`](https://docs.python.org/3/library/argparse.html)).
-- Support inexact search.
 
 ## Copyrights
 
