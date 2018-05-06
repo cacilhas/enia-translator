@@ -11,12 +11,15 @@ from appdirs import user_config_dir
 __all__ = ['Settings', 'load_settings']
 
 
-class Settings(namedtuple('Settings', 'cachedir urls translate urls_class')):
+class Settings(
+    namedtuple('Settings', 'cachedir urls translate min_score urls_class')
+):
 
     @classmethod
     def from_values_view(cls, config: Dict[str, Dict[str, Any]]) -> 'Settings':
         cachedir = config['local']['cache']
         translate = config['enia']['translate']
+        min_score = float(config['enia']['min-score'])
         urls = {
             k.split('.')[0].replace('-', '_'): v
             for k, v in config['web'].items()
@@ -26,6 +29,7 @@ class Settings(namedtuple('Settings', 'cachedir urls translate urls_class')):
         return cls(
             cachedir=cachedir,
             translate=translate,
+            min_score=min_score,
             urls=urlsClass(**urls),
             urls_class=urlsClass,
         )
@@ -48,7 +52,10 @@ def load_settings() -> Settings:
 
 
 def get_config(fname: str, cachedir: str) -> ConfigParser:
-    config = ConfigParser({'translate': 'en-ia'}, default_section='enia')
+    config = ConfigParser(
+        {'translate': 'en-ia', 'min-score': '0.75'},
+        default_section='enia',
+    )
     config.add_section('local')
     config.add_section('web')
     config.set(

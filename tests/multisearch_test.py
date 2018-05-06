@@ -21,6 +21,7 @@ class MultisearchTest(TestCase):
         self.config = Settings(
             cachedir=path.join(temp_dir, 'cache'),
             translate='en-ia',
+            min_score=.95,
             urls=urls_class(
                 en_ia='http://www.interlingua.com/an/ceid-english{lower[0]}',
             ),
