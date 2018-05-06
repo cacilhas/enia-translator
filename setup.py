@@ -18,6 +18,7 @@ setup(
     packages=find_packages(exclude=('tests', 'tests.*')),
     install_requires=[
         'appdirs==1.4.3',
+        'leven==1.0.4',
         'lxml==4.2.1',
         'requests==2.18.4',
         'urllib3==1.22',

@@ -40,6 +40,7 @@ class LoadSettingsTest(TestCase):
             self.assertEqual(config, Settings(
                 cachedir=cachedir,
                 translate='en-ia',
+                min_score=.95,
                 urls=config.urls_class(
                     en_ia='http://www.interlingua.com/an/'
                           'ceid-english{lower[0]}',
@@ -49,7 +50,8 @@ class LoadSettingsTest(TestCase):
             self.assertTrue(buf.closed)
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
-                'translate = en-ia\n\n'
+                'translate = en-ia\n'
+                'min-score = 0.95\n\n'
                 '[local]\n'
                 'cache = {cachedir}\n\n'
                 '[web]\n'
@@ -78,7 +80,8 @@ class LoadSettingsTest(TestCase):
             def side_effect(filename, mode='r') -> StringIO:
                 return buf if mode == 'w' else StringIO(
                     '[enia]\n'
-                    'translate = ia-en\n\n'
+                    'translate = ia-en\n'
+                    'min-score = 0.8\n'
                     '[local]\n'
                     'cache = /tmp\n\n'
                     '[web]\n'
@@ -100,6 +103,7 @@ class LoadSettingsTest(TestCase):
             self.assertEqual(config, Settings(
                 cachedir='/tmp',
                 translate='ia-en',
+                min_score=.8,
                 urls=config.urls_class(
                     en_ia='http://www.interlingua.com/an/'
                           'ceid-english{lower[0]}',
@@ -110,7 +114,8 @@ class LoadSettingsTest(TestCase):
             self.assertTrue(buf.closed)
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
-                'translate = ia-en\n\n'
+                'translate = ia-en\n'
+                'min-score = 0.8\n\n'
                 '[local]\n'
                 'cache = /tmp\n\n'
                 '[web]\n'
@@ -128,6 +133,8 @@ class LoadSettingsTest(TestCase):
 
             def side_effect(filename, mode='r') -> StringIO:
                 return buf if mode == 'w' else StringIO(
+                    '[enia]\n'
+                    'min-score = 0.9\n\n'
                     '[local]\n'
                     'cache = /tmp\n'
                 )
@@ -146,6 +153,7 @@ class LoadSettingsTest(TestCase):
             self.assertEqual(config, Settings(
                 cachedir='/tmp',
                 translate='en-ia',
+                min_score=.9,
                 urls=config.urls_class(
                     en_ia='http://www.interlingua.com/an/'
                           'ceid-english{lower[0]}',
@@ -155,7 +163,8 @@ class LoadSettingsTest(TestCase):
             self.assertTrue(buf.closed)
             self.assertEqual(iop.getvalue(),
                 '[enia]\n'
-                'translate = en-ia\n\n'
+                'translate = en-ia\n'
+                'min-score = 0.9\n\n'
                 '[local]\n'
                 'cache = /tmp\n\n'
                 '[web]\n'
