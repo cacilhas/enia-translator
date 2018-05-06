@@ -3,13 +3,14 @@ from typing import Generator
 import string
 from lxml import html
 import requests
-from .settings import Settings
+from .settings import Settings, load_settings
 
 
 class EniaWordSearcher:
     __slots__ = ('__tree', 'cachedir', 'url')
 
-    def __init__(self, base_word: str, settings: Settings):
+    def __init__(self, base_word: str, settings: Settings=None):
+        settings = settings or load_settings()
         key = settings.translate.replace('-', '_')
         self.cachedir = settings.cachedir
         self.url = getattr(settings.urls, key).format(

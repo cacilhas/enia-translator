@@ -63,3 +63,10 @@ class EniaWordSearcherTest(TestCase):
             )
         searcher = EniaWordSearcher('all', self.config)
         self.assertEqual(list(searcher.search('all')), ['ALL omne'])
+
+    @vcr.use_cassette('ceid-englishw.yaml')
+    def test_use_default_settings(self):
+        with patch('enia_translator.main.load_settings',
+                   return_value=self.config):
+            searcher = EniaWordSearcher('when')
+        self.assertEqual(list(searcher.search('when')), ['WHEN quando'])
