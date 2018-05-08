@@ -14,7 +14,7 @@ class EniaWordSearcherTest(TestCase):
 
     def setUp(self):
         temp_dir = path.realpath(path.join(
-            path.dirname(__file__), '..', 'tmp', 'enia',
+            path.dirname(__file__), path.pardir, 'tmp', 'enia',
         ))
         urls_class = namedtuple('URLs', 'en_ia')
         self.config = Settings(

@@ -15,21 +15,15 @@ def search(phrase: str, callback: Callable[[str], None], *,
     loop = loop or asyncio.get_event_loop()
     tasks = []
     for word in phrase.split():
-        future = Future(loop=loop)
-        future.add_done_callback(partial(pass_result, callback))
-        tasks.append(dispatch(word, settings, future, loop))
+        tasks.append(dispatch(word, settings, callback, loop=loop))
     loop.run_until_complete(
         asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED, loop=loop)
     )
 
 
-def pass_result(f: Callable[[str], None], future: Future) -> None:
-    f(future.result())
-
-
-async def dispatch(word: str, settings: Settings, future: Future,
-                   loop: EventLoop) -> None:
+async def dispatch(word: str, settings: Settings,
+                   callback: Callable[[str], None], loop: EventLoop) -> None:
     searcher = EniaWordSearcher(word, settings=settings)
     for result in searcher.search(word):
-        future.set_result(result)
+        callback(result)
         await asyncio.sleep(0, loop=loop)
