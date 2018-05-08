@@ -13,11 +13,15 @@ EventLoop = asyncio.AbstractEventLoop
 def search(phrase: str, callback: Callable[[str], None], *,
            settings: Settings=None, loop: EventLoop=None) -> None:
     loop = loop or asyncio.get_event_loop()
-    tasks = []
-    for word in phrase.split():
-        tasks.append(dispatch(word, settings, callback, loop=loop))
     loop.run_until_complete(
-        asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED, loop=loop)
+        asyncio.wait(
+            [
+                dispatch(word, settings, callback, loop=loop)
+                for word in phrase.split()
+            ],
+            return_when=asyncio.ALL_COMPLETED,
+            loop=loop,
+        )
     )
 
 
