@@ -35,9 +35,11 @@ setup(
     },
     classifiers=[
         'Environment :: Console',
+        'Framework :: AsyncIO',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3 :: Only',
+        'Topic :: Desktop Environment',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
