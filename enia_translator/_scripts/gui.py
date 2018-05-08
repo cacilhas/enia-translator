@@ -1,4 +1,5 @@
 import asyncio
+from contextlib import closing
 from threading import Thread
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -33,8 +34,6 @@ class GUIApplication(ttk.Frame):
         bt_go = ttk.Button(self, text='Search', command=self.search)
         tx_show = self.result = ScrolledText(self, wrap=tk.WORD)
 
-        tx_entry.bind('<Return>', lambda evt: self.search())
-
         lb_main.pack(anchor=tk.NW, side=tk.LEFT, expand=False)
         tx_entry.pack(anchor=tk.NE, side=tk.RIGHT, fill=tk.X, expand=True)
         fr_search.pack(anchor=tk.N, fill=tk.X, expand=True)
@@ -50,11 +49,8 @@ class GUIApplication(ttk.Frame):
             self.result.insert(tk.INSERT, result + '\n')
 
         def target() -> None:
-            loop = asyncio.new_event_loop()
-            try:
+            with closing(asyncio.new_event_loop()) as loop:
                 enia_search(value, callback, loop=loop)
-            finally:
-                loop.close()
 
         thr = Thread(target=target)
         thr.deamon = True
