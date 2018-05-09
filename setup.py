@@ -8,7 +8,7 @@ with open('./README.md') as fp:
 
 setup(
     name='enia-translator',
-    version='1.2.2',
+    version='1.2.3',
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
     long_description=long_description,
@@ -16,11 +16,13 @@ setup(
     author_email='batalema@cacilhas.info',
     url='https://bitbucket.org/cacilhas/enia-translator/',
     packages=find_packages(exclude=('tests', 'tests.*')),
+    package_data={'enia_translator._scripts': ['*.yaml']},
     install_requires=[
         'appdirs==1.4.3',
         'leven==1.0.4',
         'lxml==4.2.1',
         'requests==2.18.4',
+        'tkml>=0.2',
         'urllib3==1.22',
     ],
     test_suite='tests',
