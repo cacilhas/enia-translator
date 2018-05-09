@@ -24,7 +24,7 @@ setup(
         'leven==1.0.4',
         'lxml==4.2.1',
         'requests==2.18.4',
-        'tmk>=0.2',
+        'tkml>=0.2',
         'urllib3==1.22',
     ],
     test_suite='tests',
