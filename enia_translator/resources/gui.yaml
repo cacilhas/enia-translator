@@ -1,0 +1,36 @@
+frame: # toplevel
+  frame: # fr_search
+    label:
+      text: 'Word to search:'
+      pack:
+        anchor: nw
+        side: left
+        expand: false
+    entry:
+      textvariable: ctx[words]
+      pack:
+        anchor: ne
+        side: right
+        fill: x
+        expand: true
+      call/focus: null
+    pack:
+      anchor: n
+      fill: x
+      expand: true
+  button:
+    text: Search
+    command: ctx[search]
+    pack:
+      anchor: s
+      expand: false
+  scrolled-text:
+    wrap: word
+    pack:
+      anchor: s
+      fill: both
+      expand: true
+
+  pack:
+    fill: both
+    expand: true
