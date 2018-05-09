@@ -9,6 +9,7 @@ It requires [Python 3.6+](https://www.python.org/) and use some dependences:
 - [`leven` 1.0.4](https://github.com/semanticize/leven)
 - [`lxml` 4.2.1](http://lxml.de/)
 - [`requests` 2.18.4](http://docs.python-requests.org/en/master/)
+- [`tkml` 0.2](https://bitbucket.org/cacilhas/tkml/)
 
 ## Use
 
