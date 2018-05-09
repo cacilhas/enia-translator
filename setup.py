@@ -16,9 +16,7 @@ setup(
     author_email='batalema@cacilhas.info',
     url='https://bitbucket.org/cacilhas/enia-translator/',
     packages=find_packages(exclude=('tests', 'tests.*')),
-    package_data={
-        'tkml': ['*.yaml'],
-    },
+    package_data={'enia_translator._scripts': ['*.yaml']},
     install_requires=[
         'appdirs==1.4.3',
         'leven==1.0.4',

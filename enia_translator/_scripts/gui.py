@@ -12,11 +12,6 @@ from enia_translator.settings import load_settings
 __all__ = ['entrypoint']
 
 
-_tree_file = path.realpath(
-    path.join(path.dirname(__file__), path.pardir, 'resources', 'gui.yaml')
-)
-
-
 def entrypoint() -> None:
     root = tk.Tk()
     root.title('EN-IA Translator')
@@ -29,12 +24,14 @@ def entrypoint() -> None:
 class GUIApplication:
 
     def __init__(self, master=None):
+        tree_file = path.realpath(path.join(path.dirname(__file__),
+                                  'gui.yaml'))
         master.bind('<Return>', lambda evt: self.search())
         self.words = tk.StringVar()
-        with open(_tree_file) as fp:
-            tree = tkml.load_fp(
+        with open(tree_file) as fp:
+            tree = self.toplevel = tkml.load_fp(
                 fp, master,
-                context=Namespace(word=self.word, search=self.search)
+                context=Namespace(words=self.words, search=self.search)
             )
         self.result = tree.children['!frame2'].children['!scrolledtext']
 
@@ -51,3 +48,6 @@ class GUIApplication:
         thr = Thread(target=target)
         thr.deamon = True
         thr.start()
+
+    def mainloop(self) -> None:
+        self.toplevel.mainloop()
