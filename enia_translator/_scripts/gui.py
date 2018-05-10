@@ -4,7 +4,9 @@ from contextlib import closing
 import os.path as path
 from threading import Thread
 import tkinter as tk
+from tkinter import messagebox
 import tkml
+from .. import __AUTHOR__, __VERSION__
 
 from enia_translator.multisearch import search as enia_search
 from enia_translator.settings import load_settings
@@ -13,11 +15,32 @@ __all__ = ['entrypoint']
 
 
 def entrypoint() -> None:
+    # Create application root
     root = tk.Tk()
-    root.title('EN-IA Translator')
-    app = GUIApplication(root)
-    root.wm_attributes('-topmost', 1)
-    root.focus_force()
+    root.title('EN-IA Translator {}'.format(__VERSION__))
+    root.option_add('*tearOff', False)
+
+    # Create main toplevel and menubar
+    win = tk.Toplevel(root)
+    menubar = tk.Menu(win)
+    win['menu'] = menubar
+
+    main_menu = tk.Menu(menubar)
+    main_menu.add_command(label='Quit', command=root.quit)
+
+    help_menu = tk.Menu(menubar)
+    help_menu.add_command(
+        label='Author',
+        command=lambda: messagebox.showinfo('Author', __AUTHOR__),
+    )
+
+    menubar.add_cascade(menu=main_menu, label=win.title())
+    menubar.add_cascade(menu=help_menu, label='Help')
+
+    # Create and show application frame
+    app = GUIApplication(win)
+    win.wm_attributes('-topmost', 1)
+    win.focus_force()
     app.mainloop()
 
 
@@ -31,9 +54,12 @@ class GUIApplication:
         with open(tree_file) as fp:
             tree = self.toplevel = tkml.load_fp(
                 fp, master,
-                context=Namespace(words=self.words, search=self.search)
+                context=Namespace(
+                    words=self.words,
+                    search=self.search,
+                    set_text=lambda widget: setattr(self, 'result', widget),
+                )
             )
-        self.result = tree.children['!frame2'].children['!scrolledtext']
 
     def search(self) -> None:
         value = self.words.get()

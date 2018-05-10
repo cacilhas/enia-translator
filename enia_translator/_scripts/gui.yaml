@@ -25,6 +25,7 @@ frame: # toplevel
       anchor: s
       expand: false
   scrolled-text:
+    self: ctx[set_text]
     wrap: word
     pack:
       anchor: s

@@ -1,4 +1,4 @@
 __AUTHOR__ = 'ℜodrigo ℭacilhας <batalema@cacilhas.info>'
-__VERSION__ = '1.0'
+__VERSION__ = '1.2.4'
 
 from .main import EniaWordSearcher
