@@ -19,9 +19,11 @@ def entrypoint() -> None:
     root = tk.Tk()
     root.title('EN-IA Translator {}'.format(__VERSION__))
     root.option_add('*tearOff', False)
+    root.withdraw()
 
     # Create main toplevel and menubar
     win = tk.Toplevel(root)
+    win.protocol('WM_DELETE_WINDOW', root.quit)
     menubar = tk.Menu(win)
     win['menu'] = menubar
 
