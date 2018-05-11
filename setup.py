@@ -2,13 +2,14 @@
 
 import os.path as path
 from setuptools import find_packages, setup
+from enia_translator import __VERSION__
 
 with open('./README.md') as fp:
     long_description = fp.read()
 
 setup(
     name='enia-translator',
-    version='1.2.4',
+    version=__VERSION__,
     provides=['enia_translator'],
     description='Search for Interligua translations on-line',
     long_description=long_description,

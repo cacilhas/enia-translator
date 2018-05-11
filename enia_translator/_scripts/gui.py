@@ -16,13 +16,13 @@ __all__ = ['entrypoint']
 
 def entrypoint() -> None:
     # Create application root
-    root = tk.Tk()
+    root = tk.Tk(className='EniaTransaltor')
     root.title('EN-IA Translator {}'.format(__VERSION__))
     root.option_add('*tearOff', False)
     root.withdraw()
 
     # Create main toplevel and menubar
-    win = tk.Toplevel(root)
+    win = tk.Toplevel(root) #, class_='EniaTransaltor')
     win.protocol('WM_DELETE_WINDOW', root.quit)
     menubar = tk.Menu(win)
     win['menu'] = menubar
@@ -48,13 +48,17 @@ def entrypoint() -> None:
 
 class GUIApplication:
 
+    __slots__ = ('result', 'toplevel', 'words')
+
     def __init__(self, master=None):
         tree_file = path.realpath(path.join(path.dirname(__file__),
                                   'gui.yaml'))
         master.bind('<Return>', lambda evt: self.search())
         self.words = tk.StringVar()
+        self.result = None
+
         with open(tree_file) as fp:
-            tree = self.toplevel = tkml.load_fp(
+            self.toplevel = tkml.load_fp(
                 fp, master,
                 context=Namespace(
                     words=self.words,
@@ -62,6 +66,7 @@ class GUIApplication:
                     set_text=lambda widget: setattr(self, 'result', widget),
                 )
             )
+        assert self.result
 
     def search(self) -> None:
         value = self.words.get()
