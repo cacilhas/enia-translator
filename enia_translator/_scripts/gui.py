@@ -6,6 +6,7 @@ from threading import Thread
 import tkinter as tk
 from tkinter import messagebox
 import tkml
+from typing import Tuple
 from .. import __AUTHOR__, __VERSION__
 
 from enia_translator.multisearch import search as enia_search
@@ -15,20 +16,35 @@ __all__ = ['entrypoint']
 
 
 def entrypoint() -> None:
-    # Create application root
+    root = create_root()
+    win, menubar = create_toplevel(root)
+    build_menus(menubar)
+    app = GUIApplication(win)
+    win.wm_attributes('-topmost', 1)
+    win.focus_force()
+    app.mainloop()
+
+
+def create_root() -> tk.Tk:
     root = tk.Tk(className='EniaTransaltor')
     root.title('EN-IA Translator {}'.format(__VERSION__))
     root.option_add('*tearOff', False)
     root.withdraw()
+    return root
 
-    # Create main toplevel and menubar
+
+def create_toplevel(root: tk.Tk) -> Tuple[tk.Toplevel, tk.Menu]:
     win = tk.Toplevel(root) #, class_='EniaTransaltor')
     win.protocol('WM_DELETE_WINDOW', root.quit)
     menubar = tk.Menu(win)
     win['menu'] = menubar
+    return win, menubar
 
+
+def build_menus(menubar: tk.Menu) -> None:
+    win = menubar.master
     main_menu = tk.Menu(menubar)
-    main_menu.add_command(label='Quit', command=root.quit)
+    main_menu.add_command(label='Quit', command=win.master.quit)
 
     help_menu = tk.Menu(menubar)
     help_menu.add_command(
@@ -38,12 +54,6 @@ def entrypoint() -> None:
 
     menubar.add_cascade(menu=main_menu, label=win.title())
     menubar.add_cascade(menu=help_menu, label='Help')
-
-    # Create and show application frame
-    app = GUIApplication(win)
-    win.wm_attributes('-topmost', 1)
-    win.focus_force()
-    app.mainloop()
 
 
 class GUIApplication:
