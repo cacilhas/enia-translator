@@ -8,3 +8,7 @@ def entrypoint() -> None:
     parser.add_argument('words', type=str, nargs='+', help='word to search')
     args = parser.parse_args()
     search(' '.join(args.words), print)
+
+
+if __name__ == '__main__':
+    entrypoint()
