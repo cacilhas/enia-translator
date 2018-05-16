@@ -1,39 +1,39 @@
 #!/usr/bin/env python3.6
 
+from configparser import ConfigParser
 import os.path as path
 from setuptools import find_packages, setup
-from enia_translator import __VERSION__
+
+config = ConfigParser()
+config.read(path.join(path.dirname(__file__), 'enia_translator', 'info.ini'))
+main_conf = config['enia']
+author_conf = config['author']
+deps_conf = config['deps']
 
 with open('./README.md') as fp:
     long_description = fp.read()
 
 setup(
     name='enia-translator',
-    version=__VERSION__,
+    version=main_conf['version'],
     provides=['enia_translator'],
-    description='Search for Interligua translations on-line',
+    description=main_conf['description'],
     long_description=long_description,
-    author='ℜodrigo ℭacilhας',
-    author_email='batalema@cacilhas.info',
-    url='https://bitbucket.org/cacilhas/enia-translator/',
+    author=author_conf['name'],
+    author_email=author_conf['contact'],
+    url=config['repo']['url'],
     packages=find_packages(exclude=('tests', 'tests.*')),
-    package_data={'enia_translator._scripts': ['*.yaml']},
-    install_requires=[
-        'appdirs==1.4.3',
-        'leven==1.0.4',
-        'lxml==4.2.1',
-        'requests==2.18.4',
-        'tkml==0.3',
-        'urllib3==1.22',
-    ],
+    package_data={
+        'enia_translator': ['info.ini'],
+        'enia_translator._scripts': ['*.yaml'],
+    },
+    setup_requires=deps_conf['setup'].split(),
+    install_requires=deps_conf['install'].split(),
     test_suite='tests',
-    tests_require=[
-        'vcrpy==1.11.1',
-    ],
+    tests_require=deps_conf['test'].split(),
     entry_points={
         'console_scripts': [
-            'en-ia = enia_translator._scripts.en_ia:entrypoint',
-            'x-en-ia = enia_translator._scripts.gui:entrypoint',
+            ' = '.join(pair) for pair in config['entry-points'].items()
         ],
     },
     classifiers=[
