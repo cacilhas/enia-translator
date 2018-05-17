@@ -1,78 +1,33 @@
-from argparse import Namespace
 import asyncio
 from contextlib import closing
-import os.path as path
+from functools import partial
 from threading import Thread
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import scrolledtext
 import tkml
-from .. import __AUTHOR__, __VERSION__
 
+from enia_translator import __AUTHOR__, __VERSION__
 from enia_translator.multisearch import search as enia_search
-from enia_translator.settings import load_settings
 
 __all__ = ['entrypoint']
 
 
 def entrypoint() -> None:
-    # Create application root
-    root = tk.Tk(className='EniaTransaltor')
-    root.title('EN-IA Translator {}'.format(__VERSION__))
-    root.option_add('*tearOff', False)
-    root.withdraw()
+    load = tkml.fixtures()
+    title = 'EN-IA Translator {}'.format(__VERSION__)
+    root = load('root.yaml')
+    words = tk.StringVar()
+    stext = None
 
-    # Create main toplevel and menubar
-    win = tk.Toplevel(root) #, class_='EniaTransaltor')
-    win.protocol('WM_DELETE_WINDOW', root.quit)
-    menubar = tk.Menu(win)
-    win['menu'] = menubar
+    def add_cascade(widget: tk.Misc, menu: tk.Menu, label: str) -> None:
+        widget.add_cascade(menu=menu, label=label)
 
-    main_menu = tk.Menu(menubar)
-    main_menu.add_command(label='Quit', command=root.quit)
-
-    help_menu = tk.Menu(menubar)
-    help_menu.add_command(
-        label='Author',
-        command=lambda: messagebox.showinfo('Author', __AUTHOR__),
-    )
-
-    menubar.add_cascade(menu=main_menu, label=win.title())
-    menubar.add_cascade(menu=help_menu, label='Help')
-
-    # Create and show application frame
-    app = GUIApplication(win)
-    win.wm_attributes('-topmost', 1)
-    win.focus_force()
-    app.mainloop()
-
-
-class GUIApplication:
-
-    __slots__ = ('result', 'toplevel', 'words')
-
-    def __init__(self, master=None):
-        tree_file = path.realpath(path.join(path.dirname(__file__),
-                                  'gui.yaml'))
-        master.bind('<Return>', lambda evt: self.search())
-        self.words = tk.StringVar()
-        self.result = None
-
-        with open(tree_file) as fp:
-            self.toplevel = tkml.load_fp(
-                fp, master,
-                context=Namespace(
-                    words=self.words,
-                    search=self.search,
-                    set_text=lambda widget: setattr(self, 'result', widget),
-                )
-            )
-        assert self.result
-
-    def search(self) -> None:
-        value = self.words.get()
-        self.result.delete('1.0', tk.END)
+    def search(evt=None) -> None:
+        value = words.get()
+        stext.delete('1.0', tk.END)
         def callback(result: str) -> None:
-            self.result.insert(tk.INSERT, result + '\n')
+            stext.insert(tk.INSERT, result + '\n')
 
         def target() -> None:
             with closing(asyncio.new_event_loop()) as loop:
@@ -82,5 +37,17 @@ class GUIApplication:
         thr.deamon = True
         thr.start()
 
-    def mainloop(self) -> None:
-        self.toplevel.mainloop()
+    def get_stext(widget: scrolledtext.ScrolledText) -> None:
+        nonlocal stext
+        stext = widget
+
+    quit = lambda: root.quit()
+    show_author = partial(messagebox.showinfo, 'Author', __AUTHOR__)
+
+    win = load('main.yaml', root)
+    win['menu'] = win.nametowidget('!menu')
+    root.mainloop()
+
+
+if __name__ == '__main__':
+    entrypoint()

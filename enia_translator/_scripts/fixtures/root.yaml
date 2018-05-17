@@ -1,0 +1,6 @@
+tk:
+  title: ctx[title]
+  option_add:
+    - "*tearOff"
+    - false
+  withdraw: null

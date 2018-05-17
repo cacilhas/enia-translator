@@ -1,0 +1,80 @@
+toplevel:
+  title: ctx[title]
+  protocol:
+    - WM_DELETE_WINDOW
+    - ctx[quit]
+  bind:
+    <Return>: ctx[search]
+  wm-attributes:
+    - -topmost
+    - 1
+
+  children:
+    - menu:
+        children:
+          - menu:
+              add-command:
+                label: Quit
+                command: ctx[quit]
+
+          - menu:
+              add-command:
+                label: Author
+                command: ctx[show_author]
+
+        call/add-cascade/1:
+          - ctx[add_cascade]
+          - "!self"
+          - "!menu.!menu"
+          - ctx[title]
+        call/add-cascade/2:
+          - ctx[add_cascade]
+          - "!self"
+          - "!menu.!menu2"
+          - Help
+
+    - frame:
+        children:
+          - frame:
+              children:
+                - label:
+                    text: 'Word to search:'
+                    pack:
+                      anchor: nw
+                      side: left
+                      expand: false
+                - entry:
+                    textvariable: ctx[words]
+                    pack:
+                      anchor: ne
+                      side: right
+                      fill: x
+                      expand: true
+                    focus: null
+              pack:
+                anchor: n
+                fill: x
+                expand: true
+
+          - button:
+              text: Search
+              command: ctx[search]
+              pack:
+                anchor: s
+                expand: false
+          - scrolled-text:
+              call/get_stext:
+                - ctx[get_stext]
+                - "!self"
+              wrap: word
+              pack:
+                anchor: s
+                fill: both
+                expand: true
+
+        pack:
+          fill: both
+          expand: true
+
+  pack: null
+  force-focus: null
